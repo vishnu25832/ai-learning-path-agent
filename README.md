@@ -121,11 +121,14 @@ The AI agent will generate a complete learning plan.
 
 Workflow Canvas
 
-screenshots/workflow.png
+<img width="1319" height="580" alt="Screenshot 2026-03-11 162654" src="https://github.com/user-attachments/assets/5e07cf9e-2a58-41bf-a91b-e16c05793a2e" />
+<img width="1310" height="574" alt="Screenshot 2026-03-11 162802" src="https://github.com/user-attachments/assets/af10535c-3aeb-4387-9598-b8cbb6ca9b3e" />
+
 
 Chatbot Demo
 
-screenshots/chat-demo.png
+
+<img width="1310" height="578" alt="Screenshot 2026-03-11 162839" src="https://github.com/user-attachments/assets/f82b0ca3-3cf4-464a-97de-c4260c279572" />
 
 ---
 
