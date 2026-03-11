@@ -1,0 +1,188 @@
+{
+  "name": "Learning path Generator Using Model Context Protocol",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -96,
+        32
+      ],
+      "id": "f5598499-6dc5-4acc-84cb-e5b9a7c723c4",
+      "name": "When chat message received",
+      "webhookId": "3de93c4d-6517-4e7e-86ac-79d4b9253051"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a learning path generator agent.\n\nYour job is to create a day-wise curriculum, gather useful learning resources, create a Google document, and schedule calendar events.\n\nComplete the workflow efficiently using the available tools.\n\nIMPORTANT RULES\n\n- Perform only ONE web search per topic.\n- Never repeat the same search.\n- Extract only useful URLs from the search results.\n- Do not return the full search response.\n- Complete the task in a maximum of 6 tool calls.\n- Do not repeat tool calls once a step is completed.\n\nSTEP 1: PLAN THE CURRICULUM\n\nWhen the user provides a topic and number of days, generate a learning plan from beginner to advanced.\n\nEach day must include:\n\n- Topic Name\n- Short Description\n- 3 Key Learning Points\n- Duration: 2 hours\n\nSTEP 2: DETERMINE START DATE\n\nDetermine the start date.\n\nRules:\n\n- If user says \"starting tomorrow\" → use tomorrow\n- If user says \"starting next Monday\" → calculate next Monday\n- If no date is mentioned → use today's date\n\nToday is {{$now.format('YYYY-MM-DD')}}.\n\nSTEP 3: FIND LEARNING RESOURCES\n\nUse the web search tool once for each topic.\n\nSearch format:\n\"[topic] beginner tutorial\"\n\nFrom the results extract:\n\n- One YouTube video URL\n- One article URL\n- One documentation URL\n\nEach link must start with https://\n\nSTEP 4: CREATE GOOGLE DOCUMENT\n\nUse the Google Docs tool to create a document titled:\n\n\"[X]-Day [Topic] Learning Path\"\n\nSTEP 5: UPDATE DOCUMENT\n\nUpdate the document using this format:\n\nDay 1: [Topic]\n\nDescription:\nShort explanation.\n\nKey Learning Points:\n\n- Point\n- Point\n- Point\n\nReference Links:\nVideo: https://...\nArticle: https://...\nDocumentation: https://...\n\nDuration: 2 hours\n\nRepeat for all days.\n\nSTEP 6: CREATE CALENDAR EVENTS\n\nCreate one calendar event per day.\n\nTitle:\nDay X: [Topic]\n\nTime:\nStart: 11:00\nEnd: 13:00\n\nSTEP 7: FINAL RESPONSE\n\nReturn exactly this message:\n\nLearning Path Complete!\n\nDocument: [Google Docs URL]\n\nCalendar: [X] events scheduled starting from [START_DATE] at 11:00 AM.\n\nYour learning journey is ready."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        256,
+        32
+      ],
+      "id": "3f611cd1-8409-4148-b38f-f87401f79f9c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        128,
+        256
+      ],
+      "id": "e108d6d1-1584-4fc1-b0fa-85cdc7a2a40d",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "kq0dADMX4stXcMU2",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://backend.composio.dev/v3/mcp/b81399fb-11fd-4017-9743-70e1f113031e/mcp?user_id=pg-test-90f3b24e-c5df-41f0-a70f-3e7508cc3e0c",
+        "authentication": "multipleHeadersAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        272
+      ],
+      "id": "7cf364d2-9908-48b2-a444-0c03a8c1c495",
+      "name": "Serpapi",
+      "credentials": {
+        "httpMultipleHeadersAuth": {
+          "id": "fWxORZmHeQQ2gvnq",
+          "name": "Multiple Headers Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://backend.composio.dev/v3/mcp/5425fc31-c6b5-4a10-baf2-b5fe767cf23d/mcp?user_id=pg-test-90f3b24e-c5df-41f0-a70f-3e7508cc3e0c",
+        "authentication": "multipleHeadersAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        592,
+        256
+      ],
+      "id": "9d951c8e-3825-4533-bd71-7526372c27d8",
+      "name": "Googlecalenderapi",
+      "credentials": {
+        "httpMultipleHeadersAuth": {
+          "id": "fWxORZmHeQQ2gvnq",
+          "name": "Multiple Headers Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://backend.composio.dev/v3/mcp/5f51f6a2-ea80-49b7-a161-6041161cab20/mcp?user_id=pg-test-90f3b24e-c5df-41f0-a70f-3e7508cc3e0c",
+        "authentication": "multipleHeadersAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        256
+      ],
+      "id": "d1da3dc0-5294-4022-b4a3-14e92b4b0314",
+      "name": "Googledocsapi",
+      "credentials": {
+        "httpMultipleHeadersAuth": {
+          "id": "fWxORZmHeQQ2gvnq",
+          "name": "Multiple Headers Auth account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Serpapi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Googlecalenderapi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Googledocsapi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "20bbb28a-1b77-4b46-b2ed-01270671e432",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b6c227c50bd3bff2c8216fe37d7e0b5a1c9f221da9341c0bee8ac53b1df91bff"
+  },
+  "id": "mtmtiwZbHutOrbjp",
+  "tags": []
+}
