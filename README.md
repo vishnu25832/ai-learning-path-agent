@@ -151,10 +151,7 @@ ai-learning-path-agent
 
 ## Author
 
-Vishnu Vardhan
+Bachina Vishnu Vardhan
 
 ---
 
-## License
-
-MIT License
